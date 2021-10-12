@@ -13,14 +13,12 @@ function M.setup()
   cmd "filetype plugin indent on"
   cmd "colorscheme dracula"
 
-  cmd 'highlight GitGutterAdd    guifg=#009900 ctermfg=2'
-  cmd 'highlight GitGutterChange guifg=#bbbb00 ctermfg=3'
-  cmd 'highlight GitGutterDelete guifg=#ff2222 ctermfg=1'
 
   bo.shiftwidth = indent
   bo.tabstop = indent
   bo.softtabstop = indent
   o.termguicolors = true
+  o.signcolumn = "yes"
   o.hidden = true
   o.breakindent = true
   o.ignorecase = true

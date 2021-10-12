@@ -73,6 +73,10 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/knucker_/.local/share/nvim/site/pack/packer/start/LuaSnip"
   },
+  ["auto-pairs"] = {
+    loaded = true,
+    path = "/home/knucker_/.local/share/nvim/site/pack/packer/start/auto-pairs"
+  },
   ["cmp-nvim-lsp"] = {
     loaded = true,
     path = "/home/knucker_/.local/share/nvim/site/pack/packer/start/cmp-nvim-lsp"
@@ -97,10 +101,6 @@ _G.packer_plugins = {
   ["fzf.vim"] = {
     loaded = true,
     path = "/home/knucker_/.local/share/nvim/site/pack/packer/start/fzf.vim"
-  },
-  ["nlua.nvim"] = {
-    loaded = true,
-    path = "/home/knucker_/.local/share/nvim/site/pack/packer/start/nlua.nvim"
   },
   ["nvim-cmp"] = {
     loaded = true,
@@ -150,20 +150,25 @@ _G.packer_plugins = {
     path = "/home/knucker_/.local/share/nvim/site/pack/packer/start/vim-fugitive"
   },
   ["vim-gitgutter"] = {
+    config = { "\27LJ\1\2?\0\0\2\0\3\0\0064\0\0\0%\1\1\0>\0\2\0027\0\2\0>\0\1\1G\0\1\0\nsetup\22config.git-gutter\frequire\0" },
     loaded = true,
     path = "/home/knucker_/.local/share/nvim/site/pack/packer/start/vim-gitgutter"
   }
 }
 
 time([[Defining packer_plugins]], false)
--- Config for: nvim-lspconfig
-time([[Config for nvim-lspconfig]], true)
-try_loadstring("\27LJ\1\2>\0\0\2\0\3\0\0064\0\0\0%\1\1\0>\0\2\0027\0\2\0>\0\1\1G\0\1\0\nsetup\21config.lspconfig\frequire\0", "config", "nvim-lspconfig")
-time([[Config for nvim-lspconfig]], false)
 -- Config for: feline.nvim
 time([[Config for feline.nvim]], true)
 try_loadstring("\27LJ\1\0024\0\0\2\0\3\0\0064\0\0\0%\1\1\0>\0\2\0027\0\2\0>\0\1\1G\0\1\0\nsetup\vfeline\frequire\0", "config", "feline.nvim")
 time([[Config for feline.nvim]], false)
+-- Config for: nvim-lspconfig
+time([[Config for nvim-lspconfig]], true)
+try_loadstring("\27LJ\1\2>\0\0\2\0\3\0\0064\0\0\0%\1\1\0>\0\2\0027\0\2\0>\0\1\1G\0\1\0\nsetup\21config.lspconfig\frequire\0", "config", "nvim-lspconfig")
+time([[Config for nvim-lspconfig]], false)
+-- Config for: vim-gitgutter
+time([[Config for vim-gitgutter]], true)
+try_loadstring("\27LJ\1\2?\0\0\2\0\3\0\0064\0\0\0%\1\1\0>\0\2\0027\0\2\0>\0\1\1G\0\1\0\nsetup\22config.git-gutter\frequire\0", "config", "vim-gitgutter")
+time([[Config for vim-gitgutter]], false)
 -- Config for: nvim-tree.lua
 time([[Config for nvim-tree.lua]], true)
 try_loadstring("\27LJ\1\2;\0\0\2\0\3\0\a4\0\0\0%\1\1\0>\0\2\0027\0\2\0002\1\0\0>\0\2\1G\0\1\0\nsetup\14nvim-tree\frequire\0", "config", "nvim-tree.lua")

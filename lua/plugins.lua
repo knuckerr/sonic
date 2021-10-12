@@ -41,13 +41,16 @@ function M.setup()
     use {'saadparwaiz1/cmp_luasnip'} -- Snippets source for nvim-cmp
     use {'L3MON4D3/LuaSnip'} -- Snippets plugin
 
-    -- Lua development
-    use { 'tjdevries/nlua.nvim' }
 
 
     -- Vim dispatch
     use { 'tpope/vim-dispatch' }
-    use { 'airblade/vim-gitgutter' }
+    use {
+	'airblade/vim-gitgutter',
+	config = function()
+	  require('config.git-gutter').setup()
+        end,
+    }
 
 
     -- Fugitive for Git

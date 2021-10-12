@@ -12,7 +12,7 @@ function M.setup()
   cmd "syntax enable"
   cmd "filetype plugin indent on"
   cmd "colorscheme dracula"
-
+  cmd "set nocompatible"
 
   o.shiftwidth = indent
   bo.tabstop = indent

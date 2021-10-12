@@ -53,6 +53,9 @@ function M.setup()
       end,
     }
 
+    -- Javascript
+    use 'MaxMEllon/vim-jsx-pretty'
+
 
     -- Fugitive for Git
     use { 'tpope/vim-fugitive' }

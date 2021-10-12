@@ -9,6 +9,7 @@ function M.setup()
     -- Color scheme
     use 'Mofiqul/dracula.nvim'
 
+    -- Auto Pair
     use 'jiangmiao/auto-pairs'
 
     -- Fuzzy finder
@@ -46,10 +47,10 @@ function M.setup()
     -- Vim dispatch
     use { 'tpope/vim-dispatch' }
     use {
-	'airblade/vim-gitgutter',
-	config = function()
-	  require('config.git-gutter').setup()
-        end,
+      'airblade/vim-gitgutter',
+      config = function()
+	require('config.git-gutter').setup()
+      end,
     }
 
 

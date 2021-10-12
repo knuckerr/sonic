@@ -4,7 +4,7 @@ local cmd = vim.cmd
 local o = vim.o
 local wo = vim.wo
 local bo = vim.bo
-local indent = 4
+local indent = 2
 local opt = vim.opt
 local g = vim.g
 
@@ -14,7 +14,7 @@ function M.setup()
   cmd "colorscheme dracula"
 
 
-  bo.shiftwidth = indent
+  o.shiftwidth = indent
   bo.tabstop = indent
   bo.softtabstop = indent
   o.termguicolors = true
@@ -35,7 +35,6 @@ function M.setup()
   o.history = 100
   o.lazyredraw = true
   o.synmaxcol = 240
-  o.mouse = "a"
   wo.number = true
   wo.relativenumber = false
   wo.scrolloff = 8

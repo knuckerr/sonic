@@ -1,7 +1,17 @@
 -- LSP settings
 local M  = {}
 function M.setup()
-    local function setup_servers()
+  local lsp = vim.lsp
+  lsp.handlers['textDocument/publishDiagnostics'] = lsp.with(lsp.diagnostic.on_publish_diagnostics, {
+      virtual_text = false,
+      signs = true,
+      underline = true,
+      update_in_insert = false,
+  })
+  vim.o.updatetime = 250
+  vim.cmd [[autocmd CursorHold,CursorHoldI * lua vim.lsp.diagnostic.show_line_diagnostics({focusable=false})]]
+
+  local function setup_servers()
     require'lspinstall'.setup()
     local servers = require'lspinstall'.installed_servers()
     for _, server in pairs(servers) do

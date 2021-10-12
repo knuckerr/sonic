@@ -13,6 +13,10 @@ function M.setup()
   cmd "filetype plugin indent on"
   cmd "colorscheme dracula"
 
+  cmd 'highlight GitGutterAdd    guifg=#009900 ctermfg=2'
+  cmd 'highlight GitGutterChange guifg=#bbbb00 ctermfg=3'
+  cmd 'highlight GitGutterDelete guifg=#ff2222 ctermfg=1'
+
   bo.shiftwidth = indent
   bo.tabstop = indent
   bo.softtabstop = indent
@@ -39,5 +43,4 @@ function M.setup()
   wo.scrolloff = 8
   wo.cursorline = true
 end
-
 return M

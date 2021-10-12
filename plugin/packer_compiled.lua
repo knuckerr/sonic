@@ -148,6 +148,10 @@ _G.packer_plugins = {
   ["vim-fugitive"] = {
     loaded = true,
     path = "/home/knucker_/.local/share/nvim/site/pack/packer/start/vim-fugitive"
+  },
+  ["vim-gitgutter"] = {
+    loaded = true,
+    path = "/home/knucker_/.local/share/nvim/site/pack/packer/start/vim-gitgutter"
   }
 }
 

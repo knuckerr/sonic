@@ -9,6 +9,8 @@ function M.setup()
     -- Color scheme
     use 'Mofiqul/dracula.nvim'
 
+    use 'jiangmiao/auto-pairs'
+
     -- Fuzzy finder
     use {
         'nvim-telescope/telescope.nvim',
@@ -45,6 +47,8 @@ function M.setup()
 
     -- Vim dispatch
     use { 'tpope/vim-dispatch' }
+    use { 'airblade/vim-gitgutter' }
+
 
     -- Fugitive for Git
     use { 'tpope/vim-fugitive' }

@@ -10,7 +10,10 @@ function M.setup()
     use 'Mofiqul/dracula.nvim'
 
     -- Auto Pair
-    use 'jiangmiao/auto-pairs'
+    use {
+      'jiangmiao/auto-pairs',
+       after = "nvim-cmp",
+    }
 
     -- Fuzzy finder
     use {
@@ -38,6 +41,7 @@ function M.setup()
     -- Collection of configurations for built-in LSP client
     use {'kabouzeid/nvim-lspinstall'}
     use {'hrsh7th/nvim-cmp'} -- Autocompletion plugin
+    use {'hrsh7th/cmp-buffer'} -- Autocompletion plugin
     use {'hrsh7th/cmp-nvim-lsp'} -- LSP source for nvim-cmp
     use {'saadparwaiz1/cmp_luasnip'} -- Snippets source for nvim-cmp
     use {'L3MON4D3/LuaSnip'} -- Snippets plugin
@@ -53,8 +57,8 @@ function M.setup()
       end,
     }
 
-    -- Javascript
-    use 'MaxMEllon/vim-jsx-pretty'
+    -- Syntax & indent
+    use 'sheerun/vim-polyglot'
 
 
     -- Fugitive for Git

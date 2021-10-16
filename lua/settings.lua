@@ -15,7 +15,6 @@ function M.setup()
   cmd "set nocompatible"
 
   o.shiftwidth = indent
-  bo.smartindent = true
   bo.tabstop = indent
   bo.softtabstop = indent
   o.termguicolors = true

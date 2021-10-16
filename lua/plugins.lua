@@ -11,8 +11,8 @@ function M.setup()
 
     -- Auto Pair
     use {
-      'jiangmiao/auto-pairs',
-       after = "nvim-cmp",
+      'windwp/nvim-autopairs',
+       require('nvim-autopairs').setup{}
     }
 
     -- Fuzzy finder

@@ -13,6 +13,8 @@ function M.setup()
   cmd "filetype plugin indent on"
   cmd "colorscheme dracula"
   cmd "set nocompatible"
+  cmd "set undodir=~/.undo-dir"
+  cmd "set undofile"
 
   o.shiftwidth = indent
   bo.tabstop = indent
@@ -32,7 +34,7 @@ function M.setup()
   o.cmdheight = 1
   o.sidescrolloff = 8
   o.sessionoptions = "blank,buffers,curdir,folds,help,options,tabpages,winsize,resize,winpos,terminal"
-  o.history = 100
+  o.history = 1000
   o.lazyredraw = true
   o.synmaxcol = 240
   wo.number = true

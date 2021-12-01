@@ -39,7 +39,7 @@ function M.setup()
       end,
     }
     -- Collection of configurations for built-in LSP client
-    use {'kabouzeid/nvim-lspinstall'}
+    use {'williamboman/nvim-lsp-installer'}
     use {'hrsh7th/nvim-cmp'} -- Autocompletion plugin
     use {'hrsh7th/cmp-buffer'} -- Autocompletion plugin
     use {'hrsh7th/cmp-nvim-lsp'} -- LSP source for nvim-cmp

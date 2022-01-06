@@ -9,7 +9,7 @@ function M.setup()
       update_in_insert = false,
   })
   vim.o.updatetime = 250
-  vim.cmd [[autocmd CursorHold,CursorHoldI * lua vim.lsp.diagnostic.show_line_diagnostics({focusable=false})]]
+  vim.cmd [[autocmd CursorHold,CursorHoldI * lua vim.diagnostic.open_float({focusable=false})]]
 
 local lsp_installer = require("nvim-lsp-installer")
 

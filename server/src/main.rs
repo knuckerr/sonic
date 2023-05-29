@@ -1,8 +1,6 @@
-use core::memory_pool;
-use core::store;
+mod server;
 
 fn main() {
-    let mut pool = memory_pool::MemoryPool::new();
-    let mut store = store::Store::new();
+    let server = server::Server::new();
     println!("Hello, world!");
 }

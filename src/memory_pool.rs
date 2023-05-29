@@ -6,15 +6,23 @@ pub struct MemoryBlock {
     size: usize,
 }
 
+unsafe impl Send for MemoryBlock{}
+
 pub struct MemoryPool {
     blocks: Vec<MemoryBlock>,
+}
+
+impl Default for MemoryPool {
+    fn default() -> Self {
+        Self::new()
+    }
 }
 
 impl MemoryPool {
     pub fn new() -> Self {
         MemoryPool { blocks: Vec::new() }
     }
-    pub fn alocate(&mut self, size: usize) -> *mut u8 {
+    pub fn allocate(&mut self, size: usize) -> *mut u8 {
         for block in &mut self.blocks {
             if block.size >= size {
                 return block.data.as_ptr();

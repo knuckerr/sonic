@@ -1,7 +1,14 @@
 use rustc_hash::FxHashMap;
 
+
 pub struct Store<'a> {
     data: FxHashMap<&'a str, Vec<u8>>,
+}
+
+impl<'a> Default for Store<'a> {
+    fn default() -> Self {
+        Self::new()
+    }
 }
 
 impl<'a> Store<'a> {

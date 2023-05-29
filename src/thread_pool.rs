@@ -1,7 +1,7 @@
 use rayon::ThreadPool;
 use rayon::ThreadPoolBuilder;
 
-pub struct RayonThreadPool(ThreadPool);
+pub struct RayonThreadPool(pub ThreadPool);
 
 impl RayonThreadPool {
     pub fn new(threads: u32) -> Result<Self, String> {
@@ -11,7 +11,7 @@ impl RayonThreadPool {
             .map_err(|e| format!("{}", e))?;
         Ok(RayonThreadPool(pool))
     }
-    fn spawn<F>(&self, job: F)
+    pub fn spawn<F>(&self, job: F)
     where
         F: FnOnce() + Send + 'static,
     {

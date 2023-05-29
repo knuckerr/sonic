@@ -36,8 +36,8 @@ impl Server {
     }
 }
 
-fn handle_client<'a>(
-    data: Arc<Mutex<store::Store<'a>>>,
+fn handle_client(
+    data: Arc<Mutex<store::Store<'_>>>,
     pool: Arc<Mutex<memory_pool::MemoryPool>>,
     stream: TcpStream,
 ) {
@@ -53,7 +53,7 @@ fn handle_client<'a>(
     };
 
     loop {
-        let result = reader.read(&mut buffer);
+        let result = reader.read(buffer);
         match result {
             Ok(0) | Err(_) => break,
             Ok(size) => {
@@ -66,7 +66,7 @@ fn handle_client<'a>(
                     }
                 };
                 writer
-                    .write_all(&response)
+                    .write_all(response)
                     .expect("Failed to write response");
                 writer.flush().expect("Failed to flush writer");
             }

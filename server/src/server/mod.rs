@@ -1,3 +1,4 @@
+pub mod parser;
 use core::memory_pool;
 use core::store;
 use core::thread_pool;
@@ -5,8 +6,8 @@ use std::error::Error;
 use std::io::{Read, Write};
 use std::net::{TcpListener, TcpStream, ToSocketAddrs};
 use std::sync::{Arc, Mutex};
-
 const BUFFER_SIZE: usize = 1024;
+use crate::server::parser::{parse_command, Command};
 
 pub struct Server {
     thread_pool: thread_pool::RayonThreadPool,
@@ -27,7 +28,9 @@ impl Server {
             let data = Arc::clone(&data);
             self.thread_pool.spawn(move || match stream {
                 Ok(stream) => {
-                    handle_client(data, pool, stream);
+                    if let Err(e) = handle_client(data, pool, stream) {
+                        println!("{}", e)
+                    }
                 }
                 Err(e) => println!("Connection failed: {}", e),
             })
@@ -37,14 +40,12 @@ impl Server {
 }
 
 fn handle_client(
-    data: Arc<Mutex<store::Store<'_>>>,
+    data: Arc<Mutex<store::Store>>,
     pool: Arc<Mutex<memory_pool::MemoryPool>>,
     stream: TcpStream,
-) {
-    let mut reader =
-        snap::read::FrameDecoder::new(stream.try_clone().expect("Failed to clone stream"));
-    let mut writer =
-        snap::write::FrameEncoder::new(stream.try_clone().expect("Failed to clone stream"));
+) -> Result<(), Box<dyn Error>> {
+    let mut reader = stream.try_clone()?;
+    let mut writer = stream.try_clone()?;
 
     let mut buffer = {
         let mut pool = pool.lock().expect("Failed to acquire lock on pool");
@@ -53,24 +54,16 @@ fn handle_client(
     };
 
     loop {
-        let result = reader.read(buffer);
-        match result {
-            Ok(0) | Err(_) => break,
-            Ok(size) => {
-                let command = String::from_utf8_lossy(&buffer[..size]);
-                let response = match command.trim() {
-                    "quit" => break,
-                    cmd => {
-                        let test = "OK";
-                        test.as_bytes()
-                    }
-                };
-                writer
-                    .write_all(response)
-                    .expect("Failed to write response");
-                writer.flush().expect("Failed to flush writer");
+        let size = reader.read(buffer)?;
+        let command = String::from_utf8_lossy(&buffer[..size]);
+        let response = match parse_command(&command) {
+            Command::Quit => break,
+            cmd => {
+                handle_command(cmd, &data)
             }
-        }
+        };
+        writer.write_all(&response)?;
+        writer.flush()?;
         let mut pool = pool.lock().expect("Failed to acquire lock on pool");
         let ptr = buffer.as_mut_ptr();
         pool.deallocate(ptr);
@@ -80,4 +73,27 @@ fn handle_client(
     let mut pool = pool.lock().expect("Failed to acquire lock on pool");
     let ptr = buffer.as_mut_ptr();
     pool.deallocate(ptr);
+    Ok(())
+}
+
+fn handle_command(command: Command, data: &Arc<Mutex<store::Store>>) -> Vec<u8> {
+    let mut locked_data = data.lock().expect("failed to acquire lock on data");
+    match command {
+        Command::Get(key) => {
+            let value = locked_data.get(key);
+            match value {
+                Some(v) => v,
+                None => b"Key not found".to_vec(),
+            }
+        }
+        Command::Set(key, value) => {
+            locked_data.set(key, value);
+            b"Set".to_vec()
+        }
+        Command::Del(key) => {
+            locked_data.delete(key);
+            b"Del".to_vec()
+        }
+        _ => b"test".to_vec(),
+    }
 }

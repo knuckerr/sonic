@@ -52,13 +52,12 @@ fn handle_client(
     buffer_size: usize,
     stream: TcpStream,
 ) -> Result<(), Box<dyn Error>> {
-    let mut buffer = Vec::with_capacity(buffer_size);
+    let mut buffer = vec![0u8; buffer_size];
 
     let mut reader = stream.try_clone()?;
     let mut writer = stream.try_clone()?;
 
     loop {
-        buffer.clear();
         let size = reader.read(&mut buffer)?;
         let command = String::from_utf8_lossy(&buffer[..size]);
 

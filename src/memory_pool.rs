@@ -61,14 +61,14 @@ impl MemoryPool {
 #[test]
 pub fn allocate() {
     let mut pool = MemoryPool::new();
-    pool.alocate(12);
+    pool.allocate(12);
     assert!(true);
 }
 
 #[test]
 pub fn deallocate() {
     let mut pool = MemoryPool::new();
-    let ptr = pool.alocate(12);
+    let ptr = pool.allocate(12);
     pool.deallocate(ptr);
     assert!(true);
 }

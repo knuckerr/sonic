@@ -83,7 +83,7 @@ fn handle_command(command: Command, shards: &[Arc<Mutex<store::Store>>]) -> Vec<
             .get(key)
             .map_or_else(|| b"Key not found".to_vec(), |v| v.clone()),
         Command::Set(key, value) => {
-            locked_data.set(key, value);
+            locked_data.set(key, value, None);
             b"Set".to_vec()
         }
         Command::Del(key) => {

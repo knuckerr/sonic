@@ -19,13 +19,8 @@ pub fn parse_command(command: &str) -> Command {
             let set_command = key_value.join(" ");
             let (key, option, value) = parse_set_command(&set_command);
             if option > 0 {
-                println!("hereeeeeeeeeeeeeeeeeee");
-                println!("key: {}", key);
                 Command::Set(key.to_string(), value, Some(Duration::from_secs(option)))
             } else {
-                println!("no option");
-                println!("key: {}", key);
-                println!("len on set {}", value.len());
                 Command::Set(key.to_string(), value, None)
             }
         }
@@ -73,28 +68,28 @@ pub fn set() {
 
 #[test]
 pub fn set3() {
-    let (_,option, value_str) = parse_set_command("set avavava ex vava ex vavava vava ex 12");
+    let (_, option, value_str) = parse_set_command("set avavava ex vava ex vavava vava ex 12");
     assert_eq!(12, option);
     assert_eq!("avavava ex vava ex vavava vava".as_bytes(), value_str);
 }
 
 #[test]
 pub fn set2() {
-    let (_,option, value_str) = parse_set_command("set \"avavava ex vavava\" ex 129292");
+    let (_, option, value_str) = parse_set_command("set \"avavava ex vavava\" ex 129292");
     assert_eq!(129292, option);
     assert_eq!("\"avavava ex vavava\"".as_bytes(), value_str);
 }
 
 #[test]
 pub fn set4() {
-    let (_,option, value_str) = parse_set_command("set \"ex\"");
+    let (_, option, value_str) = parse_set_command("set \"ex\"");
     assert_eq!(0, option);
     assert_eq!("\"ex\"".as_bytes(), value_str);
 }
 
 #[test]
 pub fn set5() {
-    let (_,option, value_str) = parse_set_command("set \"heue jsjslaoxnsjex jsjsex sjsjs ex\"");
+    let (_, option, value_str) = parse_set_command("set \"heue jsjslaoxnsjex jsjsex sjsjs ex\"");
     assert_eq!(0, option);
     assert_eq!(
         "\"heue jsjslaoxnsjex jsjsex sjsjs ex\"".as_bytes(),

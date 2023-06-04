@@ -1,7 +1,7 @@
 import socket
-import snappy
+import gzip
 
-BUFFER_SIZE = 1024
+BUFFER_SIZE = 90000
 
 def main():
     # Connect to the server
@@ -15,13 +15,13 @@ def main():
         command = input("Enter a command (get/set/del/quit): ")
 
         # Compress the command using Snappy
-        compressed_command = command.encode()
+        compressed_command = gzip.compress(command.encode())
 
         # Send the compressed command to the server
         client_socket.sendall(compressed_command)
 
         # Receive and process the response from the server
-        response = client_socket.recv(BUFFER_SIZE)
+        response = gzip.decompress(client_socket.recv(BUFFER_SIZE))
         # Decompress the response using Snappy
         print("Server response:", response.decode())
 

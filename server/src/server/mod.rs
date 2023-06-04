@@ -1,12 +1,15 @@
 pub mod parser;
+use crate::server::parser::{parse_command, Command};
 use core::memory_pool;
 use core::store;
 use core::thread_pool;
+use flate2::read::GzDecoder;
+use flate2::write::GzEncoder;
+use flate2::Compression;
 use std::error::Error;
 use std::io::{Read, Write};
 use std::net::{TcpListener, TcpStream, ToSocketAddrs};
 use std::sync::{Arc, Mutex};
-use crate::server::parser::{parse_command, Command};
 
 pub struct Server {
     thread_pool: thread_pool::RayonThreadPool,
@@ -18,7 +21,7 @@ impl Server {
         let _thread_pool = thread_pool::RayonThreadPool::new(num_cpus::get() as u32).unwrap();
         Server {
             thread_pool: _thread_pool,
-            buffer_size: 1024,
+            buffer_size: 90000,
             shard_count: 4,
         }
     }
@@ -59,14 +62,23 @@ fn handle_client(
 
     loop {
         let size = reader.read(&mut buffer)?;
-        let command = String::from_utf8_lossy(&buffer[..size]);
+        let mut command = String::new();
+
+        // Decompress the received command
+        let mut decoder = GzDecoder::new(&buffer[..size]);
+        decoder.read_to_string(&mut command)?;
 
         let response = match parse_command(&command) {
             Command::Quit => break,
             cmd => handle_command(cmd, shards),
         };
 
-        writer.write_all(&response)?;
+        // Compress the response
+        let mut encoder = GzEncoder::new(Vec::new(), Compression::default());
+        encoder.write_all(&response)?;
+        let compressed_data = encoder.finish()?;
+
+        writer.write_all(&compressed_data)?;
         writer.flush()?;
     }
 

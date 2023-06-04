@@ -22,7 +22,7 @@ impl Store {
         match self.data.get(&key).cloned() {
             Some((value, Some(expiration))) => {
                 if expiration > Instant::now() {
-                    return Some(value);
+                    Some(value)
                 } else {
                     self.data.remove(&key);
                     None

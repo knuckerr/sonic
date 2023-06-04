@@ -81,7 +81,7 @@ fn handle_command(command: Command, shards: &[Arc<Mutex<store::Store>>]) -> Vec<
     match command {
         Command::Get(key) => locked_data
             .get(key)
-            .map_or_else(|| b"Key not found".to_vec(), |v| v.clone()),
+            .map_or_else(|| b"Key not found".to_vec(), |v| v),
         Command::Set(key, value, expiry) => {
             locked_data.set(key, value, expiry);
             b"Set".to_vec()

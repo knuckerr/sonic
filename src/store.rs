@@ -55,8 +55,12 @@ pub fn get_with_duration() {
     let mut store = Store {
         data: FxHashMap::default(),
     };
-    let durration = Some(Duration::new(5,0));
-    store.set("test".to_string(), "test".to_owned().into_bytes(), durration);
+    let durration = Some(Duration::new(5, 0));
+    store.set(
+        "test".to_string(),
+        "test".to_owned().into_bytes(),
+        durration,
+    );
     let data = store.get("test".to_string()).unwrap();
     assert_eq!("test".to_owned().into_bytes(), data);
 }

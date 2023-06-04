@@ -82,8 +82,8 @@ fn handle_command(command: Command, shards: &[Arc<Mutex<store::Store>>]) -> Vec<
         Command::Get(key) => locked_data
             .get(key)
             .map_or_else(|| b"Key not found".to_vec(), |v| v.clone()),
-        Command::Set(key, value) => {
-            locked_data.set(key, value, None);
+        Command::Set(key, value, expiry) => {
+            locked_data.set(key, value, expiry);
             b"Set".to_vec()
         }
         Command::Del(key) => {
@@ -97,7 +97,7 @@ fn handle_command(command: Command, shards: &[Arc<Mutex<store::Store>>]) -> Vec<
 fn get_shard_index(command: &Command, shard_count: usize) -> usize {
     match command {
         Command::Get(key) | Command::Del(key) => hash_key(key) % shard_count,
-        Command::Set(key, _) => hash_key(key) % shard_count,
+        Command::Set(key, _, _) => hash_key(key) % shard_count,
         _ => 0,
     }
 }

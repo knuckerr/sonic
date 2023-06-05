@@ -1,6 +1,6 @@
 pub mod parser;
+
 use crate::server::parser::{parse_command, Command};
-use core::memory_pool;
 use core::store;
 use core::thread_pool;
 use flate2::read::GzDecoder;
@@ -102,7 +102,11 @@ fn handle_command(command: Command, shards: &[Arc<Mutex<store::Store>>]) -> Vec<
             locked_data.delete(key);
             b"Del".to_vec()
         }
-        _ => b"test".to_vec(),
+        Command::EXP(key, expiry) => {
+            locked_data.exp(key, expiry);
+            b"Exp".to_vec()
+        }
+        _ => b"Invalid".to_vec(),
     }
 }
 

@@ -1,7 +1,7 @@
 use rayon::ThreadPool;
 use rayon::ThreadPoolBuilder;
 
-pub struct RayonThreadPool(pub ThreadPool);
+pub struct RayonThreadPool(ThreadPool);
 
 impl RayonThreadPool {
     pub fn new(threads: u32) -> Result<Self, String> {

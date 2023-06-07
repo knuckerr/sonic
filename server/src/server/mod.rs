@@ -1,18 +1,19 @@
 pub mod lexer;
 pub mod parser;
+pub mod errors;
 
 use core::store;
 use core::thread_pool;
 use flate2::read::GzDecoder;
 use flate2::write::GzEncoder;
 use flate2::Compression;
-use std::error::Error;
 use std::io::{Read, Write};
 use std::net::{TcpListener, TcpStream, ToSocketAddrs};
 use std::sync::{Arc, Mutex};
 
 use crate::server::lexer::{lexer_command, Command};
 use crate::server::parser::handle_command;
+use crate::server::errors::ServerError;
 
 pub struct Server {
     thread_pool: thread_pool::RayonThreadPool,
@@ -35,7 +36,7 @@ impl Server {
         }
         shards
     }
-    pub fn run<A: ToSocketAddrs>(self, addr: A) -> Result<(), Box<dyn Error>> {
+    pub fn run<A: ToSocketAddrs>(self, addr: A) -> Result<(), ServerError> {
         let listener = TcpListener::bind(addr)?;
         let shards = self.create_shards();
         for stream in listener.incoming() {
@@ -43,7 +44,7 @@ impl Server {
             self.thread_pool.spawn(move || match stream {
                 Ok(stream) => {
                     if let Err(e) = handle_client(&shards, self.buffer_size, stream) {
-                        println!("{}", e)
+                        eprintln!("{}", e)
                     }
                 }
                 Err(e) => println!("Connection failed: {}", e),
@@ -57,7 +58,7 @@ fn handle_client(
     shards: &[Arc<Mutex<store::Store>>],
     buffer_size: usize,
     stream: TcpStream,
-) -> Result<(), Box<dyn Error>> {
+) -> Result<(), ServerError> {
     let mut buffer = vec![0u8; buffer_size];
 
     let mut reader = stream.try_clone()?;

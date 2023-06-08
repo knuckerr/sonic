@@ -1,6 +1,6 @@
+pub mod errors;
 pub mod lexer;
 pub mod parser;
-pub mod errors;
 
 use core::store;
 use core::thread_pool;
@@ -11,9 +11,9 @@ use std::io::{Read, Write};
 use std::net::{TcpListener, TcpStream, ToSocketAddrs};
 use std::sync::{Arc, Mutex};
 
+use crate::server::errors::ServerError;
 use crate::server::lexer::{lexer_command, Command};
 use crate::server::parser::handle_command;
-use crate::server::errors::ServerError;
 
 pub struct Server {
     thread_pool: thread_pool::RayonThreadPool,
@@ -21,12 +21,12 @@ pub struct Server {
     shard_count: usize,
 }
 impl Server {
-    pub fn new() -> Self {
-        let _thread_pool = thread_pool::RayonThreadPool::new(num_cpus::get() as u32).unwrap();
+    pub fn new(buffer: usize, shards: usize, threads: u32) -> Self {
+        let _thread_pool = thread_pool::RayonThreadPool::new(threads).unwrap();
         Server {
             thread_pool: _thread_pool,
-            buffer_size: 90000,
-            shard_count: 4,
+            buffer_size: buffer,
+            shard_count: shards,
         }
     }
     pub fn create_shards(&self) -> Vec<Arc<Mutex<store::Store>>> {

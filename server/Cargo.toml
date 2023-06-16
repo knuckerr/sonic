@@ -11,3 +11,6 @@ clap = {version="4.3.2", features = ["derive"]}
 
 [dependencies.core]
 path = "../"
+
+[profile.release]
+strip = true  # Automatically strip symbols from the binary.

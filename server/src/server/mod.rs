@@ -10,6 +10,7 @@ use flate2::Compression;
 use std::io::{Read, Write};
 use std::net::{TcpListener, TcpStream, ToSocketAddrs};
 use std::sync::{Arc, Mutex};
+use std::collections::HashSet;
 
 use crate::server::errors::ServerError;
 use crate::server::lexer::{lexer_command, Command};
@@ -39,11 +40,13 @@ impl Server {
     pub fn run<A: ToSocketAddrs>(self, addr: A) -> Result<(), ServerError> {
         let listener = TcpListener::bind(addr)?;
         let shards = self.create_shards();
+        let keys = Arc::new(Mutex::new(HashSet::<String>::new()));
         for stream in listener.incoming() {
             let shards = shards.clone();
+            let keys = keys.clone();
             self.thread_pool.spawn(move || match stream {
                 Ok(stream) => {
-                    if let Err(e) = handle_client(&shards, self.buffer_size, stream) {
+                    if let Err(e) = handle_client(&shards, keys, self.buffer_size, stream) {
                         eprintln!("{}", e)
                     }
                 }
@@ -56,6 +59,7 @@ impl Server {
 
 fn handle_client(
     shards: &[Arc<Mutex<store::Store>>],
+    keys: Arc<Mutex<HashSet<String>>>,
     buffer_size: usize,
     stream: TcpStream,
 ) -> Result<(), ServerError> {
@@ -74,7 +78,7 @@ fn handle_client(
 
         let response = match lexer_command(&command) {
             Command::Quit => break,
-            cmd => handle_command(cmd, shards),
+            cmd => handle_command(cmd, shards, keys.clone()),
         };
 
         // Compress the response

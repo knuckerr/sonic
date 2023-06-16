@@ -6,6 +6,7 @@ pub enum Command {
     Set(String, Vec<u8>, Option<Duration>),
     Del(String),
     Exp(String, Duration),
+    Keys(Option<String>),
     Invalid,
 }
 
@@ -35,6 +36,8 @@ pub fn lexer_command(command: &str) -> Command {
             }
         }
         ["del", key, ..] => Command::Del(key.to_string()),
+        ["keys"] => Command::Keys(None),
+        ["keys", value] => Command::Keys(Some(value.to_string())),
         _ => Command::Invalid,
     }
 }

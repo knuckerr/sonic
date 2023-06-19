@@ -9,6 +9,13 @@ edition = "2021"
 flate2 = "1.0.26"
 clap = {version="4.3.2", features = ["derive"]}
 
+[dev-dependencies]
+criterion = { version = "0.4", features = ["html_reports"] }
+
+[[bench]]
+name = "server_benchmark"
+harness = false
+
 [dependencies.core]
 path = "../"
 

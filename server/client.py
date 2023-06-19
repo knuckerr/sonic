@@ -12,7 +12,7 @@ def main():
 
     while True:
         # Read user input from the command line
-        command = input("Enter a command (get/set/del/quit): ")
+        command = input("Enter a command (get/set/del/quit/keys/exp): ")
 
         # Compress the command using Snappy
         compressed_command = gzip.compress(command.encode())
